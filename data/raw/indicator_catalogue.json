@@ -1,0 +1,128 @@
+[
+ {
+  "IndicatorId": "FE_FRTR_W_TFR",
+  "Label": "Total fertility rate 15-49",
+  "Definition": "Total fertility rate for the three years preceding the survey for age group 15-49 expressed per woman",
+  "MeasurementType": "Rate",
+  "Denominator": "Per woman",
+  "Level1": "Fertility",
+  "Level2": "Fertility rates"
+ },
+ {
+  "IndicatorId": "FP_CUSM_W_MOD",
+  "Label": "Married women currently using any modern method of contraception",
+  "Definition": "Percentage of currently married or in union women currently using any modern method of contraception",
+  "MeasurementType": "Percent",
+  "Denominator": "Currently married women",
+  "Level1": "Family Planning",
+  "Level2": "Current use of contraception by currently married women"
+ },
+ {
+  "IndicatorId": "CM_ECMR_C_NNR",
+  "Label": "Neonatal mortality rate",
+  "Definition": "Probability of dying in the first month of life in the five or ten years preceding the survey, per 1,000 live births. Estimates are given for ten year periods for all characteristics, but for five year periods only for the national total, by residence, and by sex.",
+  "MeasurementType": "Rate",
+  "Denominator": "Per thousand children exposed in period in age group",
+  "Level1": "Infant and Child Mortality",
+  "Level2": "Early childhood mortality rates"
+ },
+ {
+  "IndicatorId": "CM_ECMR_C_U5M",
+  "Label": "Under-five mortality rate",
+  "Definition": "Probability of dying before the fifth birthday in the five or ten years preceding the survey, per 1,000 live births. Estimates are given for ten year periods for all characteristics, but for five year periods only for the national total, by residence, and by sex.",
+  "MeasurementType": "Rate",
+  "Denominator": "Per thousand children exposed in period in age group",
+  "Level1": "Infant and Child Mortality",
+  "Level2": "Early childhood mortality rates"
+ },
+ {
+  "IndicatorId": "RH_ANCP_W_SKP",
+  "Label": "Antenatal care from a skilled provider",
+  "Definition": "Percentage of women who had a live birth (or stillbirth) in the two (or three/five) years preceding the survey who received antenatal care during the pregnancy for the most recent live birth from a skilled provider",
+  "MeasurementType": "Percent",
+  "Denominator": "Women who had a live birth (or stillbirth) in the two (or three/five) years preceding the survey",
+  "Level1": "Reproductive Health",
+  "Level2": "Antenatal care"
+ },
+ {
+  "IndicatorId": "RH_ANCN_W_N4P",
+  "Label": "Antenatal visits for pregnancy: 4+ visits",
+  "Definition": "Percentage of women who had a live birth (or stillbirth) in the two (or three/five) years preceding the survey who had 4+ antenatal care visits",
+  "MeasurementType": "Percent",
+  "Denominator": "Women who had a live birth (or stillbirth) in the two (or three/five) years preceding the survey",
+  "Level1": "Reproductive Health",
+  "Level2": "Number of antenatal care visits "
+ },
+ {
+  "IndicatorId": "RH_DELP_C_DHF",
+  "Label": "Place of delivery: Health facility",
+  "Definition": "Percentage of live births (or stillbirths) in the two (or three/five) years preceding the survey delivered at a health facility",
+  "MeasurementType": "Percent",
+  "Denominator": "Live births (or stillbirths) in the two (or three/five) years preceding the survey",
+  "Level1": "Reproductive Health",
+  "Level2": "Place of delivery"
+ },
+ {
+  "IndicatorId": "RH_DELA_C_SKP",
+  "Label": "Assistance during delivery from a skilled provider",
+  "Definition": "Percentage of live births (or stillbirths) in the two (or three/five) years preceding the survey assisted by a skilled provider. Skilled provider includes doctor, nurse, midwife and auxiliary nurse or midwife.",
+  "MeasurementType": "Percent",
+  "Denominator": "Live births (or stillbirths) in the two (or three/five) years preceding the survey",
+  "Level1": "Reproductive Health",
+  "Level2": "Assistance during delivery"
+ },
+ {
+  "IndicatorId": "RH_PCMT_W_DY2",
+  "Label": "Mother's first postnatal checkup in the first two days after birth",
+  "Definition": "Percentage of women giving birth in the two years preceding the survey who had their first postnatal checkup within the first two days after birth",
+  "MeasurementType": "Percent",
+  "Denominator": "Women giving birth in the two years preceding the survey",
+  "Level1": "Reproductive Health",
+  "Level2": "Timing of first postnatal checkup for the mother"
+ },
+ {
+  "IndicatorId": "CH_VACC_C_BAS",
+  "Label": "Fully vaccinated (8 basic antigens)",
+  "Definition": "Percentage of children 12-23 (or 24-35) months who were fully vaccinated with 8 basic antigens (BCG, Polio 1-3, DPT 1-3, Measles)",
+  "MeasurementType": "Percent",
+  "Denominator": "Children age 12-23 [or 24-35] months",
+  "Level1": "Child Health",
+  "Level2": "Vaccinations"
+ },
+ {
+  "IndicatorId": "CH_VACC_C_NON",
+  "Label": "Received no vaccinations",
+  "Definition": "Percentage of children 12-23 [or 24-35] months who had received no vaccinations",
+  "MeasurementType": "Percent",
+  "Denominator": "Children age 12-23 [or 24-35] months",
+  "Level1": "Child Health",
+  "Level2": "Vaccinations"
+ },
+ {
+  "IndicatorId": "CN_NUTS_C_HA2",
+  "Label": "Children stunted",
+  "Definition": "Percentage of children stunted (below -2 SD of height for age according to the WHO standard)",
+  "MeasurementType": "Percent",
+  "Denominator": "Children under age five",
+  "Level1": "Child Nutrition",
+  "Level2": "Nutritional status of children"
+ },
+ {
+  "IndicatorId": "ML_NETC_C_ITN",
+  "Label": "Children under 5 who slept under an insecticide-treated net (ITN)",
+  "Definition": "Percentage of children under age five who slept under an insecticide treated net (ITN) the night before the survey",
+  "MeasurementType": "Percent",
+  "Denominator": "Children under age five",
+  "Level1": "Malaria",
+  "Level2": "Use of mosquito nets by children"
+ },
+ {
+  "IndicatorId": "ED_LITR_W_LIT",
+  "Label": "Women who are literate",
+  "Definition": "Percentage of women who are literate",
+  "MeasurementType": "Percent",
+  "Denominator": "Women interviewed",
+  "Level1": "Education",
+  "Level2": "Literacy"
+ }
+]

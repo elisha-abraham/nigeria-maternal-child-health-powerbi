@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.pyc
+
+# Power BI local files: per-user settings and the data cache
+**/.pbi/
+
+# never commit credentials
+*.cnf
+.env
