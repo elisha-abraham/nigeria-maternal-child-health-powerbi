@@ -1,0 +1,67 @@
+table Indicator
+	lineageTag: 47bbd516-72d1-4017-ba04-7322b3b91609
+
+	column 'Indicator ID'
+		dataType: string
+		isHidden
+		lineageTag: e2246b21-06a3-47b9-aeaa-2f3504ed85b8
+		summarizeBy: none
+		sourceColumn: indicator_id
+
+	column Indicator
+		dataType: string
+		lineageTag: 51b84b00-ab37-4411-b81c-6e548dadab50
+		summarizeBy: none
+		sourceColumn: indicator
+		sortByColumn: 'Sort order'
+
+	column 'Indicator group'
+		dataType: string
+		lineageTag: e706723f-c32e-4067-808c-41785e995976
+		summarizeBy: none
+		sourceColumn: indicator_group
+
+	column Unit
+		dataType: string
+		lineageTag: 92409731-6a10-4cda-b8f7-db0b42406fe5
+		summarizeBy: none
+		sourceColumn: unit
+
+	column Direction
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 591ec477-7304-481a-878e-9e4fa0198816
+		summarizeBy: none
+		sourceColumn: direction
+
+	column 'Sort order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 699b2889-eac5-4fa8-ada1-659037c15480
+		summarizeBy: none
+		sourceColumn: sort_order
+
+	column 'DHS label'
+		dataType: string
+		lineageTag: 88de4769-9f2e-4bad-bd7b-79d5f0b84593
+		summarizeBy: none
+		sourceColumn: source_label
+
+	column Definition
+		dataType: string
+		lineageTag: e9e63ce8-0d39-4fc9-9ba2-221e701bdf4b
+		summarizeBy: none
+		sourceColumn: definition
+
+	partition Indicator = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\indicator.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"direction", Int64.Type}, {"sort_order", Int64.Type}}, "en-US")
+				in
+				    Typed
+

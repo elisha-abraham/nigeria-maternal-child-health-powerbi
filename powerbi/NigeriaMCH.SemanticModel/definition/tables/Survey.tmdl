@@ -1,0 +1,48 @@
+table Survey
+	lineageTag: c2c1bbc3-66af-4992-ba76-d92fe93c4458
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 1ed4ccb6-22c0-4b24-a9e5-0987eb01b197
+		summarizeBy: none
+		sourceColumn: survey_year
+
+	column 'Survey ID'
+		dataType: string
+		isHidden
+		lineageTag: fcf51eb2-c192-48f5-93f8-73a70e03a754
+		summarizeBy: none
+		sourceColumn: survey_id
+
+	column Survey
+		dataType: string
+		lineageTag: afd920b1-9216-40ab-9951-caed9c5a57c8
+		summarizeBy: none
+		sourceColumn: survey
+		sortByColumn: Year
+
+	column Fieldwork
+		dataType: string
+		lineageTag: 76044c6c-ad9d-4e6f-b75f-324c92364288
+		summarizeBy: none
+		sourceColumn: fieldwork
+
+	column 'Has state results'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 55d5e171-5808-412c-a95b-15b3d0819c27
+		summarizeBy: none
+		sourceColumn: has_state_results
+
+	partition Survey = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\survey.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"survey_year", Int64.Type}, {"has_state_results", Int64.Type}}, "en-US")
+				in
+				    Typed
+

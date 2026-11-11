@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "NigeriaMCH"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "77216eed-99c6-47b3-8a8d-ef318de81444"
+  }
+}

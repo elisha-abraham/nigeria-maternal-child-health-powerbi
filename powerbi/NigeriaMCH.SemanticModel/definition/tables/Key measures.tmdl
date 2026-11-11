@@ -1,0 +1,219 @@
+table 'Key measures'
+	lineageTag: fa9b8a5b-445f-413c-b214-21509e35bf2f
+
+	/// Value of the indicator in view for the state in context.
+	/// With no single indicator chosen it shows delivery in a health facility; with no single survey chosen it shows 2024.
+	measure 'State value' =
+			VAR SelectedIndicator = SELECTEDVALUE ( Indicator[Indicator ID], "RH_DELP_C_DHF" )
+			VAR SelectedYear = SELECTEDVALUE ( Survey[Year], 2024 )
+			RETURN
+			    CALCULATE (
+			        AVERAGE ( 'State values'[Value] ),
+			        REMOVEFILTERS ( Indicator ),
+			        Indicator[Indicator ID] = SelectedIndicator,
+			        REMOVEFILTERS ( Survey ),
+			        Survey[Year] = SelectedYear
+			    )
+		formatString: 0.0
+		displayFolder: 1 Values
+		lineageTag: 68b26ea6-a1e3-41de-8e00-d2ddb8f29448
+
+	/// Value of the indicator in view for the zone in context, as published by the survey.
+	measure 'Zone value' =
+			VAR SelectedIndicator = SELECTEDVALUE ( Indicator[Indicator ID], "RH_DELP_C_DHF" )
+			VAR SelectedYear = SELECTEDVALUE ( Survey[Year], 2024 )
+			RETURN
+			    CALCULATE (
+			        AVERAGE ( 'Zone values'[Value] ),
+			        REMOVEFILTERS ( Indicator ),
+			        Indicator[Indicator ID] = SelectedIndicator,
+			        REMOVEFILTERS ( Survey ),
+			        Survey[Year] = SelectedYear
+			    )
+		formatString: 0.0
+		displayFolder: 1 Values
+		lineageTag: 471a9835-4fca-4288-8298-db75fcb48de3
+
+	/// National value of the indicator in view, as published by the survey. It is not an average of the states.
+	measure 'National value' =
+			VAR SelectedIndicator = SELECTEDVALUE ( Indicator[Indicator ID], "RH_DELP_C_DHF" )
+			VAR SelectedYear = SELECTEDVALUE ( Survey[Year], 2024 )
+			RETURN
+			    CALCULATE (
+			        AVERAGE ( 'National values'[Value] ),
+			        REMOVEFILTERS ( Indicator ),
+			        Indicator[Indicator ID] = SelectedIndicator,
+			        REMOVEFILTERS ( Survey ),
+			        Survey[Year] = SelectedYear
+			    )
+		formatString: 0.0
+		displayFolder: 1 Values
+		lineageTag: 9fa062bb-ad0f-4ca0-9008-785e4b669cee
+
+	/// State value minus national value, in the indicator's own units.
+	measure 'Gap to national' =
+			VAR StateValue = [State value]
+			RETURN
+			    IF ( NOT ISBLANK ( StateValue ), StateValue - [National value] )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: 2 Comparisons
+		lineageTag: c171c8a0-2565-492c-b629-b4c87820d12b
+
+	/// 1 when a higher value is better, -1 when a lower value is better, 0 for context indicators.
+	measure 'Indicator direction' =
+			VAR SelectedIndicator = SELECTEDVALUE ( Indicator[Indicator ID], "RH_DELP_C_DHF" )
+			RETURN
+			    CALCULATE (
+			        MAX ( Indicator[Direction] ),
+			        REMOVEFILTERS ( Indicator ),
+			        Indicator[Indicator ID] = SelectedIndicator
+			    )
+		formatString: 0
+		displayFolder: 5 Helpers
+		lineageTag: a7eee8b6-e961-4cbe-b05a-f0acf4c346f0
+
+	/// Most favourable state value: the highest, or the lowest when lower is better.
+	measure 'Best state value' =
+			VAR Direction = [Indicator direction]
+			VAR StateTable = ADDCOLUMNS ( ALLSELECTED ( State[State] ), "@Value", [State value] )
+			VAR Target =
+			    IF ( Direction = -1, MINX ( StateTable, [@Value] ), MAXX ( StateTable, [@Value] ) )
+			RETURN
+			    Target
+		formatString: 0.0
+		displayFolder: 2 Comparisons
+		lineageTag: 7e121adb-467b-4168-bdac-0179ce52c2fc
+
+	/// Name of the state with the most favourable value.
+	measure 'Best state' =
+			VAR Direction = [Indicator direction]
+			VAR StateTable = ADDCOLUMNS ( ALLSELECTED ( State[State] ), "@Value", [State value] )
+			VAR Target =
+			    IF ( Direction = -1, MINX ( StateTable, [@Value] ), MAXX ( StateTable, [@Value] ) )
+			RETURN
+			    CONCATENATEX ( FILTER ( StateTable, [@Value] = Target ), State[State], ", " )
+		displayFolder: 2 Comparisons
+		lineageTag: e2c99543-8ad4-4c6a-8f79-79c81bcaefa4
+
+	/// Least favourable state value.
+	measure 'Worst state value' =
+			VAR Direction = [Indicator direction]
+			VAR StateTable = ADDCOLUMNS ( ALLSELECTED ( State[State] ), "@Value", [State value] )
+			VAR Target =
+			    IF ( Direction = 1, MINX ( StateTable, [@Value] ), MAXX ( StateTable, [@Value] ) )
+			RETURN
+			    Target
+		formatString: 0.0
+		displayFolder: 2 Comparisons
+		lineageTag: 93c56a31-a2a9-4740-84da-cada4497fb59
+
+	/// Name of the state with the least favourable value.
+	measure 'Worst state' =
+			VAR Direction = [Indicator direction]
+			VAR StateTable = ADDCOLUMNS ( ALLSELECTED ( State[State] ), "@Value", [State value] )
+			VAR Target =
+			    IF ( Direction = 1, MINX ( StateTable, [@Value] ), MAXX ( StateTable, [@Value] ) )
+			RETURN
+			    CONCATENATEX ( FILTER ( StateTable, [@Value] = Target ), State[State], ", " )
+		displayFolder: 2 Comparisons
+		lineageTag: 54332ebd-a2b4-458b-b50a-30877467ed51
+
+	/// Distance between the most and least favourable state values: a simple measure of inequality between states.
+	measure 'Gap between best and worst state' = ABS ( [Best state value] - [Worst state value] )
+		formatString: 0.0
+		displayFolder: 2 Comparisons
+		lineageTag: a1c32415-dcb5-4472-9ccf-57e8f2b0f4c9
+
+	/// Number of states whose value is more favourable than the national value.
+	measure 'States doing better than national' =
+			VAR Direction = [Indicator direction]
+			VAR National = [National value]
+			VAR StateTable = ADDCOLUMNS ( ALLSELECTED ( State[State] ), "@Value", [State value] )
+			RETURN
+			    COUNTROWS (
+			        FILTER ( StateTable, IF ( Direction = -1, [@Value] < National, [@Value] > National ) )
+			    )
+		formatString: 0
+		displayFolder: 2 Comparisons
+		lineageTag: f269449f-1920-4b2a-a89b-73091730039d
+
+	/// State value in the 2024 survey minus the value in the 2018 survey.
+	measure 'Change since 2018' =
+			VAR ValueIn2024 = CALCULATE ( [State value], REMOVEFILTERS ( Survey ), Survey[Year] = 2024 )
+			VAR ValueIn2018 = CALCULATE ( [State value], REMOVEFILTERS ( Survey ), Survey[Year] = 2018 )
+			RETURN
+			    IF ( NOT ISBLANK ( ValueIn2024 ) && NOT ISBLANK ( ValueIn2018 ), ValueIn2024 - ValueIn2018 )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: 3 Change over time
+		lineageTag: 47f8a394-b825-44fe-9100-bab21321a697
+
+	/// Change since 2018 with the sign set so that a positive number always means things got better.
+	measure 'Progress since 2018' = [Change since 2018] * [Indicator direction]
+		formatString: +0.0;-0.0;0.0
+		displayFolder: 3 Change over time
+		lineageTag: e8d345bf-04e4-4e04-af98-cabdf457337a
+
+	/// National value in the 2024 survey minus the value in the 2018 survey.
+	measure 'National change since 2018' =
+			CALCULATE ( [National value], REMOVEFILTERS ( Survey ), Survey[Year] = 2024 )
+			    - CALCULATE ( [National value], REMOVEFILTERS ( Survey ), Survey[Year] = 2018 )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: 3 Change over time
+		lineageTag: a5757d52-6558-4cd2-9c2f-823c82cecc17
+
+	/// Percentage of women who are literate in the state in context, whatever indicator is in view.
+	measure 'Female literacy' = CALCULATE ( [State value], REMOVEFILTERS ( Indicator ), Indicator[Indicator ID] = "ED_LITR_W_LIT" )
+		formatString: 0.0
+		displayFolder: 4 Context
+		lineageTag: 9a5d39fa-4f26-4bf0-92c7-a1407c8c5fbb
+
+	/// Name of the indicator the value measures are showing.
+	measure 'Indicator in view' =
+			VAR SelectedIndicator = SELECTEDVALUE ( Indicator[Indicator ID], "RH_DELP_C_DHF" )
+			RETURN
+			    CALCULATE (
+			        MAX ( Indicator[Indicator] ),
+			        REMOVEFILTERS ( Indicator ),
+			        Indicator[Indicator ID] = SelectedIndicator
+			    )
+		displayFolder: 5 Helpers
+		lineageTag: 02de7df7-ad7b-4bd8-b3c7-5282ea635045
+
+	/// Unit of the indicator in view.
+	measure 'Unit in view' =
+			VAR SelectedIndicator = SELECTEDVALUE ( Indicator[Indicator ID], "RH_DELP_C_DHF" )
+			RETURN
+			    CALCULATE (
+			        MAX ( Indicator[Unit] ),
+			        REMOVEFILTERS ( Indicator ),
+			        Indicator[Indicator ID] = SelectedIndicator
+			    )
+		displayFolder: 5 Helpers
+		lineageTag: 54bc6ba4-647b-427d-b184-cce349f0f56b
+
+	/// Survey year the value measures are showing.
+	measure 'Year in view' = SELECTEDVALUE ( Survey[Year], 2024 )
+		formatString: 0
+		displayFolder: 5 Helpers
+		lineageTag: e7467fa8-3b78-4368-b681-068a9bc144a1
+
+	/// Text heading for a page: indicator, unit and survey year.
+	measure Heading = [Indicator in view] & " (" & [Unit in view] & "), " & [Year in view] & " survey"
+		displayFolder: 5 Helpers
+		lineageTag: 5ada7444-b032-45d9-9071-260236e1fbdc
+
+	column Placeholder
+		dataType: string
+		isHidden
+		lineageTag: ea4f11c5-960b-4595-beb6-83c6b1797c23
+		summarizeBy: none
+		sourceColumn: Placeholder
+
+	partition 'Key measures' = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Placeholder = text], {{"measures"}})
+				in
+				    Source
+

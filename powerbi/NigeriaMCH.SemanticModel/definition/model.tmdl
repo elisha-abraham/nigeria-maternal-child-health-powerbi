@@ -1,0 +1,23 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DataFolder","Indicator","Survey","Zone","State","State values","Zone values","National values","Key measures"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Indicator
+ref table Survey
+ref table Zone
+ref table State
+ref table 'State values'
+ref table 'Zone values'
+ref table 'National values'
+ref table 'Key measures'
+

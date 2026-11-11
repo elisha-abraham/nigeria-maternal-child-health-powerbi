@@ -1,0 +1,39 @@
+table State
+	lineageTag: c65ad586-9a48-4d12-baeb-4c750d6007e3
+
+	column State
+		dataType: string
+		lineageTag: 35566a3b-b2fe-49e9-ab9b-8f87b696e150
+		summarizeBy: none
+		sourceColumn: state
+
+	column 'Zone name'
+		dataType: string
+		isHidden
+		lineageTag: 94ed0f40-5f3e-4bb1-bfd1-05bd615da8e8
+		summarizeBy: none
+		sourceColumn: zone
+
+	column 'ISO code'
+		dataType: string
+		lineageTag: 13459441-016c-42c9-b44f-c83437301bb7
+		summarizeBy: none
+		sourceColumn: iso_code
+
+	column 'Map location'
+		dataType: string
+		lineageTag: 80acd075-f533-4421-81a4-c04ad547937a
+		dataCategory: Place
+		summarizeBy: none
+		sourceColumn: map_location
+
+	partition State = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\state.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {}, "en-US")
+				in
+				    Typed
+

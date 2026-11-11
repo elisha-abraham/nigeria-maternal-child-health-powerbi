@@ -1,0 +1,42 @@
+table 'National values'
+	lineageTag: 0d1e0070-527c-4b13-95fc-23562cca9573
+
+	column Year
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 584f0f43-c384-4404-8b43-29a3b0545c67
+		summarizeBy: none
+		sourceColumn: survey_year
+
+	column 'Indicator ID'
+		dataType: string
+		isHidden
+		lineageTag: 2a1158c8-816a-45c5-b307-d8590fffadc9
+		summarizeBy: none
+		sourceColumn: indicator_id
+
+	column Value
+		dataType: double
+		formatString: 0.0
+		lineageTag: 2d9d22e4-5327-4228-91cc-bffc1c6d9182
+		summarizeBy: none
+		sourceColumn: value
+
+	column 'Weighted cases'
+		dataType: double
+		formatString: #,0
+		lineageTag: 62b6800a-36f4-4063-ad76-b8ef95e3711d
+		summarizeBy: none
+		sourceColumn: weighted_n
+
+	partition 'National values' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\national_values.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"survey_year", Int64.Type}, {"value", type number}, {"weighted_n", type number}}, "en-US")
+				in
+				    Typed
+

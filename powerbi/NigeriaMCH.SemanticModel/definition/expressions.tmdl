@@ -1,0 +1,5 @@
+expression DataFolder = "C:\Users\User\Desktop\Elisha\Data Analysis\Portfolio\projects\02-nigeria-maternal-child-health-powerbi\data\model" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 86bb1c28-a457-4585-88b7-e6c5b35c1b44
+
+	annotation PBI_ResultType = Text
+

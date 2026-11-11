@@ -1,0 +1,36 @@
+relationship 287fc3bd-ad7d-4d69-a02c-c6cf9c38114a
+	fromColumn: 'State values'.'Indicator ID'
+	toColumn: Indicator.'Indicator ID'
+
+relationship 21adddaa-e301-451d-bb5f-a283896fe1e1
+	fromColumn: 'State values'.Year
+	toColumn: Survey.Year
+
+relationship cc39d99a-0ec2-4ccd-9c7e-fa3ebf98a31a
+	fromColumn: 'State values'.State
+	toColumn: State.State
+
+relationship e7b92214-916b-44a0-b22e-1ab71b8dd4a5
+	fromColumn: 'Zone values'.'Indicator ID'
+	toColumn: Indicator.'Indicator ID'
+
+relationship 2a0bc026-eda3-4b6b-bd1d-2994d59150ef
+	fromColumn: 'Zone values'.Year
+	toColumn: Survey.Year
+
+relationship 8136ba14-2b17-49d3-9f92-7c86408756df
+	fromColumn: 'Zone values'.Zone
+	toColumn: Zone.Zone
+
+relationship 751da60c-4afa-4bbf-9346-ea059b1fa482
+	fromColumn: 'National values'.'Indicator ID'
+	toColumn: Indicator.'Indicator ID'
+
+relationship 044d1cfd-489c-4fe7-a4b7-8132356b700a
+	fromColumn: 'National values'.Year
+	toColumn: Survey.Year
+
+relationship 9be4a246-4bed-40df-a4ff-37a602ac173b
+	fromColumn: State.'Zone name'
+	toColumn: Zone.Zone
+

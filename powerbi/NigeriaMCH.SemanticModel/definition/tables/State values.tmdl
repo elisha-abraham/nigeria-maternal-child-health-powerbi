@@ -1,0 +1,56 @@
+table 'State values'
+	lineageTag: 84d261bc-e77f-4dac-b03b-0623ae82728c
+
+	column Year
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4d8c1199-f1f7-4545-8e59-e8958d05e366
+		summarizeBy: none
+		sourceColumn: survey_year
+
+	column 'Indicator ID'
+		dataType: string
+		isHidden
+		lineageTag: c5cc3553-e58e-4060-b9c8-7207f5ca0d87
+		summarizeBy: none
+		sourceColumn: indicator_id
+
+	column State
+		dataType: string
+		isHidden
+		lineageTag: 1ae4cb04-08de-462d-9a0c-f21bb405b5f2
+		summarizeBy: none
+		sourceColumn: state
+
+	column Value
+		dataType: double
+		formatString: 0.0
+		lineageTag: d8a68648-5cf3-4a52-98a7-b64307016053
+		summarizeBy: none
+		sourceColumn: value
+
+	column 'Weighted cases'
+		dataType: double
+		formatString: #,0
+		lineageTag: cd16ed98-1935-46c0-ba46-0fb05d0bdb6f
+		summarizeBy: none
+		sourceColumn: weighted_n
+
+	column 'Unweighted cases'
+		dataType: double
+		formatString: #,0
+		lineageTag: 69e1907d-ea55-4508-b158-d494afcd5675
+		summarizeBy: none
+		sourceColumn: unweighted_n
+
+	partition 'State values' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\state_values.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"survey_year", Int64.Type}, {"value", type number}, {"weighted_n", type number}, {"unweighted_n", type number}}, "en-US")
+				in
+				    Typed
+
